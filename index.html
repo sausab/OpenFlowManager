@@ -1,0 +1,751 @@
+<div data-role="page" id="index">
+
+	<div data-role='header' data-position="fixed" data-theme="b">
+		<h1>OpenFlow Manager</h1>
+	</div><!-- header -->
+	
+	<div data-role="content">
+
+		<br><br><br><br><br><br>
+		<div align="center">
+			<img src="images/openflow.png"/>
+		</div>
+		<br><br><br><br><br><br><br><br><br>
+		<div data-role="controlgroup">
+			<a href="#" data-role="button" data-icon="info" data-theme="b">Aggregate Statistics</a>
+			<a href="#topology_explorer" data-role="button" data-icon="star" data-theme="b">Topology Explorer</a>
+			<a href="#flow_modifier" data-role="button" data-icon="gear" data-theme="b">Flow Modifier</a>
+			<a href="#controller_selection" data-role="button" data-icon="grid" data-theme="b">Select Controller</a>
+		</div>
+
+	</div><!-- content -->
+	
+	<div data-role='footer' data-id="myfooter" data-theme="b" data-position="fixed" id="myfooter">
+		<h1></h1>
+	</div><!-- footer -->
+
+</div>
+
+
+
+
+
+<div data-role="page" id="topology_explorer">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Topology Explorer</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+
+		<script id="topology_explorer_template" type="text/x-jquery-tmpl">
+       
+			<li>
+				<a href="#statistics" onclick="setSwitchId('${dpid}')">
+				<img src="images/switch.png" />
+				<h3>Switch ${dpid}</h3>
+				<p>${desc}</p></a>
+				<a href="#statistics" onclick="setSwitchId('${dpid}')">Statistics</a>
+			</li>
+                 
+       	</script>
+				
+		<ul data-role="listview" data-inset="true" id="te_list_container">
+
+		</ul>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" id="myfooter" id="myfooter">
+		<a href="#index" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+
+<div data-role="page" id="statistics">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Switch Statistics</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="statistics_template" type="text/x-jquery-tmpl">
+
+			<table>
+				<tr>
+					<td width="60%">
+						<table cellpadding="8px">
+							<tr><td><b>DPID:</b></td><td>${dpid}</td></tr>
+							<tr><td><b>Manufacturer:</b></td><td>${manufacturerDescription}</td></tr>
+							<tr><td><b>Serial Number:</b></td><td>${serialNumber}</td></tr>
+							<tr><td><b>Hardware Description:</b></td><td>${hardwareDescription}</td></tr>
+							<tr><td><b>Software Description:</b></td><td>${softwareDescription}</td></tr>
+						</table>
+					</td>
+					<td width="40%" align="right">
+						<table cellpadding="8px">
+							<tr><td><b>Connected Hosts:</b></td><td>${hosts}</td></tr>
+							<tr><td><b>Ports:</b></td><td>${ports}</td></tr>
+							<tr><td><b>Buffers:</b></td><td>${buffers}</td></tr>
+							<tr><td><b>Flows:</b></td><td>${flows}</td></tr>
+							<tr><td><b>Queues:</b></td><td>${queues}</td></tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+
+		</script>
+		
+		<table width="100%" height="50%">
+			<tr>
+				<td width="30%">
+					<div id="switchImage">
+						<img src="images/switch.png"/>
+					</div>
+				</td>
+				<td width="70%">
+					<div class="ui-body ui-body-c" id="stats_table_container">
+						
+					</div><!-- /grid-a -->
+				</td>
+			</tr>
+		</table>
+		<br>
+		<ul data-role="listview" data-inset="true">
+			<li><a href="#port_statistics">Port Statistics</a></li>
+			<li><a href="#flow_statistics">Flow Statistics</a></li>
+			<li><a href="#host_statistics">Host Statistics</a></li>
+			<li><a href="#">Queue Statistics</a></li>
+			<li><a href="#table_statistics">Table Statistics</a></li>
+			<li><a href="#switch_aggregate_statistics">Aggregate Statistics</a></li>
+		</ul>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed" id="myfooter">
+		<a href="#topology_explorer" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+
+<div data-role="page" id="port_statistics">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Port Statistics</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="port_statistics_template" type="text/x-jquery-tmpl">
+
+			<div data-role="collapsible" data-content-theme="c">
+				<h3>Port ${portNumber}</h3>
+				<p></p>
+				<ul data-role="listview" data-inset="true" data-theme="d">
+					<li>Port Number	 <span class="ui-li-count">${portNumber}</span></li>
+					<li>Port Name	 <span class="ui-li-count">${portName}</span></li>
+					<li>Hardware Address	 <span class="ui-li-count">${hdAddress}</span></li>
+					<li>Status	 <span class="ui-li-count">${status}</span></li>
+					<li>Received Packets	 <span class="ui-li-count">${receivePackets}</span></li>
+					<li>Transmitted Packets	 <span class="ui-li-count">${transmitPackets}</span></li>
+					<li>Received Bytes	 <span class="ui-li-count">${receiveBytes}</span></li>
+					<li>Transmitted Bytes	 <span class="ui-li-count">${transmitBytes}</span></li>
+				</ul>
+			</div>
+
+       	</script>
+
+		<div id="ps_collapsible_container">
+
+		</div>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#statistics" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+<div data-role="page" id="host_statistics">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Host Statistics</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="host_statistics_template" type="text/x-jquery-tmpl">
+
+			<div data-role="collapsible" data-content-theme="c">
+				<h3>Host ${hostNumber}</h3>
+				<p></p>
+				<ul data-role="listview" data-inset="true" data-theme="d">
+					<li>Host MAC Address	 <span class="ui-li-count">${mac}</span></li>
+					<li>Reachable via Port	 <span class="ui-li-count">${port}</span></li>
+					<li>Vlan Id	 <span class="ui-li-count">${vlan}</span></li>
+				</ul>
+			</div>
+
+       	</script>
+
+		<div id="hs_collapsible_container">
+
+		</div>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#statistics" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+<div data-role="page" id="table_statistics">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Table Statistics</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="table_statistics_template" type="text/x-jquery-tmpl">
+
+			<div data-role="collapsible" data-content-theme="c">
+				<h3>Table ${tableId}</h3>
+				<p></p>
+				<ul data-role="listview" data-inset="true" data-theme="d">
+					<li>Table Name	 <span class="ui-li-count">${name}</span></li>
+					<li>Active Count	 <span class="ui-li-count">${activeCount}</span></li>
+					<li>Wildcards	 <span class="ui-li-count">${wildcards}</span></li>
+					<li>Maximum Entries	 <span class="ui-li-count">${maximumEntries}</span></li>
+					<li>Lookup Count	 <span class="ui-li-count">${lookupCount}</span></li>
+					<li>Matched Count	 <span class="ui-li-count">${matchedCount}</span></li>
+				</ul>
+			</div>
+
+       	</script>
+
+		<div id="ts_collapsible_container">
+
+		</div>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#statistics" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+<div data-role="page" id="flow_statistics">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Flow Statistics</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="fs_gp_template" type="text/x-jquery-tmpl">
+
+			<div data-role="collapsible" data-content-theme="c">
+				<h3>Flow ${flowId}</h3>
+				<p></p>
+				<ul data-role="listview" data-inset="true" data-theme="d" id="fs_list_template_${flowId}">
+					<li data-role="list-divider">General Properties</li>
+					<li id="${packetCount}">Packet Count	 <span class="ui-li-count">${packetCount}</span></li>
+					<li id="${byteCount}">Byte Count	 <span class="ui-li-count">${byteCount}</span></li>
+					<li>Hard Timeout	 <span class="ui-li-count">${hardTimeout}</span></li>
+					<li>Idle Timeout	 <span class="ui-li-count">${idleTimeout}</span></li>
+					<li>Duration Seconds	 <span class="ui-li-count">${durationSeconds}</span></li>
+					<li>Table Id	 <span class="ui-li-count">${tableId}</span></li>
+					<li>Priority	 <span class="ui-li-count">${priority}</span></li>
+					<li data-role="list-divider">Match</li>
+					<li>DL Destination	 <span class="ui-li-count">${dataLayerDestination}</span></li>
+					<li>DL Source	 <span class="ui-li-count">${dataLayerSource}</span></li>
+					<li>DL Type	 <span class="ui-li-count">${dataLayerType}</span></li>
+					<li>DL VLAN	 <span class="ui-li-count">${dataLayerVirtualLan}</span></li>
+					<li>DL VLAN Priority	 <span class="ui-li-count">${dataLayerVirtualLanPriorityCodePoint}</span></li>
+					<li>Input Port	 <span class="ui-li-count">${inputPort}</span></li>
+					<li>N/W Destination	 <span class="ui-li-count">${networkDestination}</span></li>
+					<li>N/W Destination Mask Length	 <span class="ui-li-count">${networkDestinationMaskLen}</span></li>
+					<li>N/W Protocol	 <span class="ui-li-count">${networkProtocol}</span></li>
+					<li>N/W Source	 <span class="ui-li-count">${networkSource}</span></li>
+					<li>N/W Source Mask Length	 <span class="ui-li-count">${networkSourceMaskLen}</span></li>	
+					<li>N/W Type of Service	 <span class="ui-li-count">${networkTypeOfService}</span></li>
+					<li>Transport Destination	 <span class="ui-li-count">${transportDestination}</span></li>
+					<li>Transport Source	 <span class="ui-li-count">${transportSource}</span></li>
+					<li>Wildcards	 <span class="ui-li-count">${wildcards}</span></li>
+					<li data-role="list-divider">Actions</li>
+				</ul>
+			</div>
+
+		</script>
+		
+		<script id="fs_actions_template" type="text/x-jquery-tmpl">
+			<li data-role="list-divider">Action ${no}</li>
+			<li>Type	 <span class="ui-li-count">${type}</span></li>
+			<li>Port	 <span class="ui-li-count">${port}</span></li>
+		</script>
+		
+		<div id="fs_collapsible_container">
+
+		</div>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#statistics" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+<div data-role="page" id="controller_selection">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Select Controller</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+	
+		<script id="controller_selection_template" type="text/x-jquery-tmpl">
+               	<input type="radio" name="radio-choice" id="radio-choice-${no}" value="${ip}"/>
+     			<label for="radio-choice-${no}">${name} : ${ip}</label>
+       	</script>
+
+		<form action="#" method="post" id="myForm">
+
+			<div data-role="fieldcontain">
+	    		
+				<fieldset data-role="controlgroup" id="cs_controlgroup_container">
+
+		    		</fieldset>
+
+				<br>
+				<a href="#index" data-role="button" data-icon="" data-theme="c" onclick="selectController()">Confirm</a>
+		
+			</div>
+		</form>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#index" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+
+<div data-role="page" id="switch_aggregate_statistics">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Aggregate Statistics</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="switch_aggregate_statistics_template" type="text/x-jquery-tmpl">
+
+			<li>Flow Count	 <span class="ui-li-count">${flowCount}</span></li>
+			<li>Packet Count	 <span class="ui-li-count">${packetCount}</span></li>
+			<li>Byte Count	 <span class="ui-li-count">${byteCount}</span></li>
+
+       	</script>
+
+		<ul data-role="listview" data-inset="true" id="sas_list_container">
+			
+		</ul>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#statistics" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+<div data-role="page" id="flow_deletion">
+
+	<div data-role="header" data-position="fixed" data-theme="b">
+		<h1>Flow Modify/Delete</h1>
+		<a href="#index" data-icon="home" data-theme="b" class="ui-btn-right">Home</a>
+	</div><!-- /header -->
+
+	<div data-role="content">
+
+		<script id="flow_deletion_template" type="text/x-jquery-tmpl">
+
+			<li>
+				<table border="0" width="100%"><tr><td width="80%"><h3>${flowName}<h3></td><td width="10%" align="right"><a href="#" data-role="button" data-icon="delete" data-theme="b" onclick="deleteFlow('${flowName}')">Delete</a></td><td width="10%" align="right"><a href="#flow_modifier" data-role="button" data-icon="arrow-r" data-theme="b" onclick="setModify('${flowName}')">Modify</a></td></tr></table>
+				<p><strong>Wildcard:  ${wildcard}, Input Port: ${inPort},   Number of actions: ${numberOfActions}</strong></p>
+			</li>
+
+       	</script>
+
+		<div class="ui-body ui-body-c">
+
+		<div id="fd_switches_cont">
+		</div>
+
+		</div>
+		
+		<br>
+
+		<ul data-role="listview" data-inset="true" id="fd_list_container">
+			
+		</ul>
+		
+	</div><!-- /content -->
+
+	<div data-role="footer" data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#flow_modifier" data-icon="back" data-theme="b">Back</a>
+	</div><!-- /footer -->
+
+</div><!-- /page -->
+
+
+
+<div data-role="page" id="flow_modifier">
+
+	<div data-role='header' data-position="fixed" data-theme="b">
+		<h1>Flow Modifier</h1>
+		<a href="#flow_deletion" data-icon="arrow-r" data-theme="b" class="ui-btn-right">Modify/Delete Flow</a>
+	</div><!-- header -->
+	
+	<div data-role="content">
+	<div class="ui-body ui-body-c">
+		<table border="0" width="100%">
+			<tr>
+				<td>
+				</td>
+			</tr>
+		</table>
+		<table border="0" width="100%">
+			<ul data-role="listview">
+				<li data-role="list-divider">General Properties</li>
+			</ul>
+			<br>
+			<tr>
+				<td width="30%" ALIGN="left">
+					<div data-role="fieldcontain">
+						<label for="name">Flow Name <sup>*</sup></label>
+						<input type="text" data-mini="true" name="name" id="name" value="" />
+					</div>
+				</td>
+				<td width="40%" ALIGN="center">
+					<div data-role="fieldcontain">
+						<label for="priority">Priority <sup>*</sup></label>
+						<input type="range" name="priority" id="priority" value="32768" min="0" max="65535" />
+					</div>
+				</td>
+				<td width="30%" ALIGN="right">
+					<form id="activeForm">
+						<fieldset data-role="controlgroup" data-type="horizontal">
+							<legend>Active <sup>*</sup></legend>
+					     		<input type="radio" name="radio-choice-active" id="radio-choice-true" value="true" checked="checked" />
+					     		<label for="radio-choice-true">True</label>
+					     		<input type="radio" name="radio-choice-active" id="radio-choice-false" value="false"  />
+					     		<label for="radio-choice-false">False</label>
+						</fieldset>
+					</form>
+				</td>
+			</tr>
+		</table>
+		<br>		
+		<table border="0" width="100%">
+			<tr>
+				<td width="49%" VALIGN="top">
+					<ul data-role="listview">
+						<li data-role="list-divider">Search Key</li>
+					</ul>
+					<br>
+
+					<div data-role="collapsible">
+   						<h3>Switch</h3>
+						<p>
+							<div id="ss_cont">
+							</div>
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>Physical Interface</h3>
+						<p>
+							<div id="sp_cont">
+							</div>
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>Ethernet</h3>
+						<p>
+							<div data-role="fieldcontain">
+							<label for="sourceMAC">Source MAC</label>
+							<table>
+								<tr>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMAC" id="sourceMAC1" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMAC2" id="sourceMAC2" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMAC3" id="sourceMAC3" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMAC4" id="sourceMAC4" value="" /></td>	
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMAC5" id="sourceMAC5" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMAC6" id="sourceMAC6" value="" /></td>
+								</tr>
+							</table>
+							</div>
+							<div data-role="fieldcontain">
+							<label for="destinationMAC">Destination MAC</label>
+							<table>
+								<tr>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMAC" id="destinationMAC1" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMAC2" id="destinationMAC2" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMAC3" id="destinationMAC3" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMAC4" id="destinationMAC4" value="" /></td>	
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMAC5" id="destinationMAC5" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMAC6" id="destinationMAC6" value="" /></td>
+								</tr>
+							</table>
+							</div>
+							<div data-role="fieldcontain">
+								<label for="vlanID">VLAN ID</label>
+								<input type="range" name="vlanID" id="vlanID" value="1024" min="1" max="4094" />
+							</div>
+							<form id="ethTypeForm">		
+								<fieldset data-role="controlgroup">
+									<legend>Ethernet Type</legend>
+							     		<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
+							     		<label for="radio-choice-1">Cat</label>
+
+							     		<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
+							     		<label for="radio-choice-2">Dog</label>
+
+							     		<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
+							     		<label for="radio-choice-3">Hamster</label>
+
+							     		<input type="radio" name="radio-choice-1" id="radio-choice-4" value="choice-4"  />
+							     		<label for="radio-choice-4">Lizard</label>
+								</fieldset>
+							</form>
+							<div data-role="fieldcontain">
+								<label for="userPriority">User Priority</label>
+								<input type="range" name="userPriority" id="userPriority" value="4" min="0" max="7" />
+							</div>				
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>ARP</h3>
+						<p>
+							<div data-role="fieldcontain">
+								<label for="arp_op_code">ARP Op Code</label>
+								<input type="range" name="arp_op_code" id="arp_op_code" value="100" min="0" max="255" />
+							</div>		
+							<div data-role="fieldcontain">
+							<label for="sourceMAC">Source MAC</label>
+							<table>
+								<tr>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMACARP" id="sourceMACARP1" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMACARP" id="sourceMACARP2" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMACARP" id="sourceMACARP3" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMACARP" id="sourceMACARP4" value="" /></td>	
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMACARP" id="sourceMACARP5" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="sourceMACARP" id="sourceMACARP6" value="" /></td>
+								</tr>
+							</table>
+							</div>
+							<div data-role="fieldcontain">
+							<label for="destinationMAC">Destination MAC</label>
+							<table>
+								<tr>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMACARP" id="destinationMACARP1" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMACARP" id="destinationMACARP2" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMACARP" id="destinationMACARP3" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMACARP" id="destinationMACARP4" value="" /></td>	
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMACARP" id="destinationMACARP5" value="" /></td>
+									<td>:</td>
+									<td><input type="text" MAXLENGTH="2" data-mini="true" name="destinationMACARP" id="destinationMACARP6" value="" /></td>
+								</tr>
+							</table>
+							</div>
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>IPv4</h3>
+						<p>
+							<div data-role="fieldcontain">
+							<label for="sourceIP">Source IP</label>
+							<table>
+								<tr>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="sourceIP1" id="sourceIP1" value="" /></td>
+									<td>.</td>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="sourceIP2" id="sourceIP2" value="" /></td>
+									<td>.</td>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="sourceIP3" id="sourceIP3" value="" /></td>
+									<td>.</td>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="sourceIP4" id="sourceIP4" value="" /></td>	
+								</tr>
+							</table>
+							</div>
+							<div data-role="fieldcontain">
+							<label for="destinationIP">Destination IP</label>
+							<table>
+								<tr>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="destinationIP1" id="destinationIP1" value="" /></td>
+									<td>.</td>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="destinationIP2" id="destinationIP2" value="" /></td>
+									<td>.</td>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="destinationIP3" id="destinationIP3" value="" /></td>
+									<td>.</td>
+									<td><input type="text" MAXLENGTH="3" data-mini="true" name="destinationIP4" id="destinationIP4" value="" /></td>	
+								</tr>
+							</table>
+							</div>
+							<div data-role="fieldcontain">
+								<label for="DSCP">DSCP</label>
+								<input type="range" name="DSCP" id="DSCP" value="30" min="0" max="63" />
+							</div>
+							<div data-role="fieldcontain">
+								<label for="tos">ToS</label>
+								<input type="text" MAXLENGTH="4" data-mini="true" name="tos" id="tos" value="" />
+							</div>
+							<div data-role="fieldcontain">
+								<label for="ip_protocol">IP Protocol</label>
+								<input type="range" name="ip_protocol" id="ip_protocol" value="100" min="0" max="255" />
+							</div>
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>ICMP</h3>
+						<p>
+							<div data-role="fieldcontain">
+								<label for="icmp_type">ICMP Type</label>
+								<input type="range" name="icmp_type" id="icmp_type" value="30146" min="0" max="65535" />
+							</div>
+							<div data-role="fieldcontain">
+								<label for="icmp_code">ICMP Code</label>
+								<input type="range" name="icmp_code" id="icmp_code" value="30146" min="0" max="65535" />
+							</div>
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>TCP/UDP</h3>
+						<p>
+							<div data-role="fieldcontain">
+								<label for="source_port">Source Port</label>
+								<input type="range" name="source_port" id="source_port" value="30146" min="0" max="65535" />
+							</div>
+							<div data-role="fieldcontain">
+								<label for="destination_port">Destination Port</label>
+								<input type="range" name="destination_port" id="destination_port" value="30146" min="0" max="65535" />
+							</div>
+						</p>
+					</div>
+				</td>
+				<td width="2%" VALIGN="top">
+				</td>
+				<td width="49%" VALIGN="top">
+					<ul data-role="listview">
+						<li data-role="list-divider">Actions</li>
+					</ul>
+					<br>
+					
+					<div data-role="collapsible">
+   						<h3>Type</h3>
+						<p>
+							<div data-role="fieldcontain">
+								<label for="action_type" class="select2">Action Type <sup>*</sup></label>
+								<select name="action_type" id="action_type">
+									<option value="choose-one" data-placeholder="true">Choose one...</option>
+									<option value="OUTPUT">OUTPUT</option>
+								       <option value="ENQUEUE">ENQUEUE</option>
+   								       <option value="SET_VLAN_VID">SET_VLAN_VID</option>
+									<option value="STRIP_VLAN">STRIP_VLAN</option>
+									<option value="SET_VLAN_PCP">SET_VLAN_PCP</option>
+									<option value="SET_DL_SRC">SET_DL_SRC</option>
+									<option value="SET_DL_DST">SET_DL_DST</option>
+									<option value="SET_NW_SRC">SET_NW_SRC</option>
+									<option value="SET_NW_DST">SET_NW_DST</option>
+									<option value="SET_NW_TOS">SET_NW_TOS</option>
+									<option value="SET_TP_SRC">SET_TP_SRC</option>
+									<option value="SET_TP_DST">SET_TP_DST</option>
+      							       </select>
+							</div>
+							<div id="input_action_type_container">
+							</div>
+						</p>
+					</div>
+					<div data-role="collapsible">
+   						<h3>Out Port</h3>
+						<p>
+							<div data-role="fieldcontain">
+								<label for="action_out_port" class="select">Action Out Port <sup>*</sup></label>
+								<select name="action_out_port" id="action_out_port">
+									<option value="choose-one" data-placeholder="true">Choose one...</option>
+									<option value="value">value</option>
+								       <option value="IN_PORT">IN_PORT</option>
+   								       <option value="NORMAL">NORMAL</option>
+									<option value="FLOOD">FLOOD</option>
+									<option value="ALL">ALL</option>
+									<option value="CONTROLLER">CONTROLLER</option>
+									<option value="LOCAL">LOCAL</option>
+      							       </select>
+							</div>
+						</p>
+					</div>
+
+					<a href="#" data-role="button" data-theme="c" onclick="addAction()">Add Action</a>
+				
+					<div id="action_count_container"></div>
+				</td>
+			</tr>
+
+		</table>
+
+		<br>
+		<a href="" data-role="button" data-icon="" data-theme="c" onclick="addFlow()">Add Flow</a>
+
+	</div>
+	</div><!-- content -->
+	
+	<div data-role='footer' data-id="myfooter" data-theme="b" data-position="fixed">
+		<a href="#index" data-icon="back" data-theme="b">Back</a>
+	</div><!-- footer -->
+
+</div>
