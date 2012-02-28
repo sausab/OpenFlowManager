@@ -1,0 +1,29 @@
+==================================================================================
+
+                               OPEN FLOW MANAGER
+
+==================================================================================
+
+OpenFlowManager is a network visualization and management web/mobile 
+application built on OpenFlow protocol.
+
+This application is built using GTMob development framework of Georgia Tech 
+and is not intended to run on any other framework.
+
+However, the code could be modified easily to make it run on a normal web server.
+
+The application uses following web technologies:
+
+1. HTML5
+2. JavaScript
+3. JQuery
+4. JQuery Mobile
+5. CSS
+6. AJAX
+7. PHP
+
+The application consumes REST APIs provided by "floodlight" which is a
+Java based openflow controller developed by BigSwitch Inc.
+
+I have added my own APIs to the original code of "floodlight" and you can 
+download a forked branch from my other repository.
