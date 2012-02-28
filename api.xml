@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<api>
+	<description>
+		<![CDATA[This is an API to interact with all the simple items]]>
+	</description>
+	
+	<command id='switches' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+
+		<index>
+			<description><![CDATA[This is to get the details of particular parking lot]]></description>
+			<action file='floodlight.php'><![CDATA[getSwitchList();]]></action>
+		</index>
+
+	</command>
+
+	<command id='switchPorts' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchPortStatistics($_REST['switchPorts']);]]></action>
+			</get>
+
+	</command>
+
+	<command id='switchFeatures' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchFeatures($_REST['switchFeatures']);]]></action>
+			</get>
+
+	</command>
+
+
+	<command id='getControllers' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+
+		<index>
+			<description><![CDATA[This is to get the details of particular parking lot]]></description>
+			<action file='floodlight.php'><![CDATA[getListOfControllers();]]></action>
+		</index>
+
+	</command>
+
+	<command id='selectController' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[selectController($_REST['selectController']);]]></action>
+			</get>
+
+	</command>
+
+	<command id='switchDescription' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchDescription($_REST['switchDescription']);]]></action>
+			</get>
+
+	</command>
+
+
+	<command id='switchFlows' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchFlowStatistics($_REST['switchFlows']);]]></action>
+			</get>
+
+	</command>
+
+
+	<command id='switchQueues' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchQueueStatistics($_REST['switchQueues']);]]></action>
+			</get>
+
+	</command>
+
+	<command id='switchHosts' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchHostStatistics($_REST['switchHosts']);]]></action>
+			</get>
+
+	</command>
+
+
+	<command id='switchTables' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchTableStatistics($_REST['switchTables']);]]></action>
+			</get>
+
+	</command>
+
+	<command id='switchAggregates' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchAggregateStatistics($_REST['switchAggregates']);]]></action>
+			</get>
+
+	</command>
+
+	<command id='addFlow' security='public'>
+
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+		<post>
+                        <description><![CDATA[This is how you can create a comment]]></description>
+                        
+                        <action file='floodlight.php'><![CDATA[addFlow($_POST['flow']);]]></action>
+                        
+                        <param id='flow'>
+                                <description><![CDATA[Flow]]></description>
+                                <defaultValue><![CDATA[some default comment text]]></defaultValue>
+                                <exampleValue><![CDATA[some example commment text]]></exampleValue>
+                        </param>
+		</post>
+
+	</command>
+
+
+	<command id='deleteFlow' security='public'>
+
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+		<post>
+                        <description><![CDATA[This is how you can create a comment]]></description>
+                        
+                        <action file='floodlight.php'><![CDATA[deleteFlow($_POST['flow']);]]></action>
+                        
+                        <param id='flow'>
+                                <description><![CDATA[Flow]]></description>
+                                <defaultValue><![CDATA[some default comment text]]></defaultValue>
+                                <exampleValue><![CDATA[some example commment text]]></exampleValue>
+                        </param>
+		</post>
+
+	</command>
+
+	<command id='switchStaticFlows' security='public'>
+		<description><![CDATA[This simple API lets you do something simple]]></description>
+			<get>
+				<description><![CDATA[This is to get the list of lots]]></description>
+				<action file='floodlight.php'><![CDATA[getSwitchStaticFlows($_REST['switchStaticFlows']);]]></action>
+			</get>
+
+	</command>
+
+
+</api>
